@@ -1,17 +1,26 @@
+use std::process::exit;
+
 use clap::{crate_version, Parser};
-mod time_interval;
+use humantime;
 
 #[derive(Parser)]
 #[clap(version=crate_version!(), author="Andrew Dawson <andrew.dawson@ecmwf.int>")]
-#[clap(about = "Convert a time interval in seconds to days, hours, minutes, and seconds")]
+#[clap(about = "Convert a time duration to a human readable form")]
 struct Opts {
-    #[clap(about = "A time interval in seconds")]
-    seconds: u64,
+    #[clap(help = "Time duration with a unit (e.g. '352s', '652minutes')")]
+    duration: String,
 }
 
 fn main() {
     let opts: Opts = Opts::parse();
 
-    let time_interval = time_interval::TimeInterval::from_seconds(opts.seconds);
-    println!("{}", time_interval.format());
+    match humantime::parse_duration(&opts.duration) {
+        Ok(duration) => {
+            println!("{}", humantime::format_duration(duration))
+        }
+        Err(err) => {
+            eprintln!("error: {}", err);
+            exit(1)
+        }
+    }
 }
