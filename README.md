@@ -21,4 +21,4 @@ You can use more than one unit if required:
     9h 7m 40s
 
 Acceptable units are: ns, us, ms, sec, min, hours, days, weeks, months, years
-(and few variations and abbreviations).
+(and a few variations and abbreviations).
